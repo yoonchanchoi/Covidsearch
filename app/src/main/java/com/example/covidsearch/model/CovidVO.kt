@@ -1,4 +1,4 @@
-package com.example.rxjavaretrofit.model
+package com.example.covidsearch.model
 
 import com.google.gson.annotations.SerializedName
 

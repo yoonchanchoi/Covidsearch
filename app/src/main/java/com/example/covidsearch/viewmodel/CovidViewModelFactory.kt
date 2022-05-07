@@ -1,8 +1,8 @@
-package com.example.rxjavaretrofit.viewmodel
+package com.example.covidsearch.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.rxjavaretrofit.repository.CovidRepository
+import com.example.covidsearch.repository.CovidRepository
 
 
 class CovidViewModelFactory(private val repository: CovidRepository) : ViewModelProvider.Factory {

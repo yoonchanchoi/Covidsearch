@@ -1,6 +1,6 @@
-package com.example.rxjavaretrofit.repository
+package com.example.covidsearch.repository
 
-import com.example.rxjavaretrofit.network.CovidRetrofit
+import com.example.covidsearch.network.CovidRetrofit
 
 class CovidRepository {
 

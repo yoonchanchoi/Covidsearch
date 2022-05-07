@@ -1,7 +1,7 @@
-package com.example.rxjavaretrofit.network
+package com.example.covidsearch.network
 
 
-import com.example.rxjavaretrofit.CovidService
+import com.example.covidsearch.CovidService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

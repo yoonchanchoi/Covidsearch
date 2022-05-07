@@ -1,4 +1,4 @@
-package com.example.rxjavaretrofit.network
+package com.example.covidsearch.network
 
 class CovidApi {
     companion object{

@@ -1,6 +1,6 @@
 package com.example.covidsearch
 
-import com.example.rxjavaretrofit.model.StateVO
+import com.example.covidsearch.model.StateVO
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query

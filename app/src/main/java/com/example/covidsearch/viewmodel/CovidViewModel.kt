@@ -1,12 +1,12 @@
-package com.example.rxjavaretrofit.viewmodel
+package com.example.covidsearch.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.rxjavaretrofit.model.CovidVO
-import com.example.rxjavaretrofit.model.StateVO
-import com.example.rxjavaretrofit.repository.CovidRepository
+import com.example.covidsearch.model.CovidVO
+import com.example.covidsearch.model.StateVO
+import com.example.covidsearch.repository.CovidRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
