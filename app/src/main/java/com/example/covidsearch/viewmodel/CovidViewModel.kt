@@ -19,6 +19,7 @@ class CovidViewModel(private val repo: CovidRepository) : ViewModel() {
     private val _liveStateVo: MutableLiveData<StateVO> = MutableLiveData()
     private val _liveToast: MutableLiveData<String> = MutableLiveData()
     private val disposable = CompositeDisposable()
+    private val _liveSearch: MutableLiveData<String> = MutableLiveData()
 
 
     val liveCovidVo: LiveData<ArrayList<CovidVO?>>
