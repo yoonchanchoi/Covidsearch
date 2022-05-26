@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.Observable
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.covidsearch.adapter.CovidViewAdapter
@@ -13,6 +14,9 @@ import com.example.covidsearch.network.CovidApi.Companion.TOKEN
 import com.example.covidsearch.repository.CovidRepository
 import com.example.covidsearch.viewmodel.CovidViewModel
 import com.example.covidsearch.viewmodel.CovidViewModelFactory
+import io.reactivex.Observable.create
+import io.reactivex.ObservableEmitter
+import io.reactivex.ObservableOnSubscribe
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         covidViewModel.getAll(TOKEN)
         initAdapter()
         observeCovidList()
+        search()
     }
 
     private fun initAdapter() {
@@ -45,22 +50,28 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun search(){
-        binding.etSearch.addTextChangedListener(object :TextWatcher{
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                TODO("Not yet implemented")
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                TODO("Not yet implemented")
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                TODO("Not yet implemented")
-            }
-
-        })
-    }
+//    private fun search(){
+//        val observableTextQuery = Observable
+//            .create(ObservableOnSubscribe{ emitter: ObservableEmitter<String>? ->
+//                binding.etSearch.addTextChangedListener(object : TextWatcher{
+//                    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//                        TODO("Not yet implemented")
+//                    }
+//
+//                    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//                        TODO("Not yet implemented")
+//                    }
+//
+//                    override fun afterTextChanged(p0: Editable?) {
+//                        TODO("Not yet implemented")
+//                    }
+//
+//                })
+//
+//
+//            })
+//
+//    }
 
 
     override fun onDestroy() {
