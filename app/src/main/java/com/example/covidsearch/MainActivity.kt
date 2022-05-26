@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         covidViewModel.getAll(TOKEN)
         initAdapter()
         observeCovidList()
-        search()
+//        search()
     }
 
     private fun initAdapter() {
