@@ -17,6 +17,8 @@ import com.example.covidsearch.viewmodel.CovidViewModelFactory
 import io.reactivex.Observable.create
 import io.reactivex.ObservableEmitter
 import io.reactivex.ObservableOnSubscribe
+import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
@@ -50,29 +52,33 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-//    private fun search(){
-//        val observableTextQuery = Observable
-//            .create(ObservableOnSubscribe{ emitter: ObservableEmitter<String>? ->
-//                binding.etSearch.addTextChangedListener(object : TextWatcher{
-//                    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//                        TODO("Not yet implemented")
-//                    }
-//
-//                    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//                        TODO("Not yet implemented")
-//                    }
-//
-//                    override fun afterTextChanged(p0: Editable?) {
-//                        TODO("Not yet implemented")
-//                    }
-//
-//                })
-//
-//
-//            })
-//
-//    }
+    val observableTextQuery = Observable
+        .create(/* observable 추가 */)
+        .debounce(500, TimeUnit.MILLISECONDS)  //입력 후 0.5간 추가 입력이 없어야만 작동
+        .subscribeOn(Schedulers.io())  //새로운 스레드에서 작업
 
+    val observableTextQuery = Observable
+        .create(ObservableOnSubscribe { emitter: ObservableEmitter<String>? ->
+            movieNameET.addTextChangedListener(object : TextWatcher{
+                override fun afterTextChanged(s: Editable?) {
+                }
+
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                    emitter?.onNext(s.toString())
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                }
+
+            })
+        })
+        .debounce(500, TimeUnit.MILLISECONDS)
+        .subscribeOn(Schedulers.io())
 
     override fun onDestroy() {
         super.onDestroy()

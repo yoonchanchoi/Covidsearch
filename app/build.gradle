@@ -56,6 +56,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
+    //Rxjavabinding
+    implementation 'com.jakewharton.rxbinding4:rxbinding:4.0.0'
 
     // Okhttp3
 //    implementation 'com.squareup.okhttp3:logging-intercepter:3.9.0'
