@@ -52,14 +52,14 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    val observableTextQuery = Observable
-        .create(/* observable 추가 */)
-        .debounce(500, TimeUnit.MILLISECONDS)  //입력 후 0.5간 추가 입력이 없어야만 작동
-        .subscribeOn(Schedulers.io())  //새로운 스레드에서 작업
+//    val observableTextQuery = Observable
+//        .create(/* observable 추가 */)
+//        .debounce(500, TimeUnit.MILLISECONDS)  //입력 후 0.5간 추가 입력이 없어야만 작동
+//        .subscribeOn(Schedulers.io())  //새로운 스레드에서 작업
 
     val observableTextQuery = Observable
         .create(ObservableOnSubscribe { emitter: ObservableEmitter<String>? ->
-            movieNameET.addTextChangedListener(object : TextWatcher{
+            binding.etSearch.addTextChangedListener(object : TextWatcher{
                 override fun afterTextChanged(s: Editable?) {
                 }
 
