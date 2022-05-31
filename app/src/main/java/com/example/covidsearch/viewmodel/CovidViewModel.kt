@@ -67,4 +67,47 @@ class CovidViewModel(private val repo: CovidRepository) : ViewModel() {
             }).addTo(disposable)
     }
 
+    fun search(key: String){
+
+    }
+
+//    inner class ItemFilter : Filter() {
+//        override fun performFiltering(charSequence: CharSequence): FilterResults {
+//            val filterString = charSequence.toString()
+//            val results = FilterResults()
+//            Log.d(TAG, "charSequence : $charSequence")
+//
+//            //검색이 필요없을 경우를 위해 원본 배열을 복제
+//            val filteredList: ArrayList<Person> = ArrayList<Person>()
+//            //공백제외 아무런 값이 없을 경우 -> 원본 배열
+//            if (filterString.trim { it <= ' ' }.isEmpty()) {
+//                results.values = persons
+//                results.count = persons.size
+//
+//                return results
+//                //공백제외 2글자 이하인 경우 -> 이름으로만 검색
+//            } else if (filterString.trim { it <= ' ' }.length <= 2) {
+//                for (person in persons) {
+//                    if (person.name.contains(filterString)) {
+//                        filteredList.add(person)
+//                    }
+//                }
+//                //그 외의 경우(공백제외 2글자 초과) -> 이름/전화번호로 검색
+//            } else {
+//                for (person in persons) {
+//                    if (person.name.contains(filterString) || person.phoneNumber.contains(filterString)) {
+//                        filteredList.add(person)
+//                    }
+//                }
+//            }
+//            results.values = filteredList
+//            results.count = filteredList.size
+//
+//            return results
+//        }
+//
+//        //...
+//    }
+
+
 }
