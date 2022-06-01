@@ -68,7 +68,25 @@ class CovidViewModel(private val repo: CovidRepository) : ViewModel() {
     }
 
     fun search(key: String){
+        val filterString = charSequence.toString()
+        val results = FilterResults()
 
+            //검색이 필요없을 경우를 위해 원본 배열을 복제
+        val filteredList: ArrayList<CovidVo> = ArrayList<CovidVo>()
+            //공백제외 아무런 값이 없을 경우 -> 원본 배열
+        if (filterString.trim { it <= ' ' }.isEmpty()) {
+            results.values = CovidVO
+            results.count = CovidVO.size
+
+            return results
+                //공백제외 2글자 이하인 경우 -> 이름으로만 검색
+        } else if (filterString.trim { it <= ' ' }.length <= 2) {
+            for (person in persons) {
+                if (person.name.contains(filterString)) {
+                    filteredList.add(person)
+                }
+            }
+        }
     }
 
 //    inner class ItemFilter : Filter() {
