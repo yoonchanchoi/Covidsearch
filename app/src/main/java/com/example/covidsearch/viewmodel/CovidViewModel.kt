@@ -10,103 +10,63 @@ import com.example.covidsearch.repository.CovidRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
 
 class CovidViewModel(private val repo: CovidRepository) : ViewModel() {
 
-    private val _liveCovidVo: MutableLiveData<ArrayList<CovidVO?>> = MutableLiveData()
+    private val _liveCovidVo: MutableLiveData<CovidVO> = MutableLiveData()
     private val _liveStateVo: MutableLiveData<StateVO> = MutableLiveData()
     private val _liveToast: MutableLiveData<String> = MutableLiveData()
     private val disposable = CompositeDisposable()
     private val _liveSearch: MutableLiveData<ArrayList<CovidVO?>> = MutableLiveData()
 
-
-    val liveCovidVo: LiveData<ArrayList<CovidVO?>>
+    val liveCovidVo: LiveData<CovidVO>
         get() = _liveCovidVo
     val liveStateVo: LiveData<StateVO>
         get() = _liveStateVo
     val liveToast: LiveData<String>
         get() = _liveToast
 
-    fun getAll(key: String) {
-        repo.getCovidInfo(key)
+    fun search(text: String){
+        repo.getCovidInfo()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
-            .subscribe({
-                //여기에서 라이브데이터에 받은 데이터를 넣어줘야될것으로 보이는 맞나?
-                //맞으면 어떻게 넣어줘야됨?
-                val regionList = arrayListOf(
-                    it?.korea,
-                    it?.seoul,
-                    it?.busan,
-                    it?.incheon,
-                    it?.gwangju,
-                    it?.jeonbuk,
-                    it?.chungbuk,
-                    it?.jeonnam,
-                    it?.gyeongbuk,
-                    it?.daegu,
-                    it?.ulsan,
-                    it?.daejeon,
-                    it?.sejong,
-                    it?.chungnam,
-                    it?.gyeonggi,
-                    it?.gyeongnam,
-                    it?.gangwon,
-                    it?.jeju,
-                    it?.quarantine
-                )
-                Log.d("성공성공!", regionList.toString())
-                _liveCovidVo.postValue(regionList)
-
-            }, {
-                Log.d("실패실패..", "${it.localizedMessage.toString()}")
-                Log.d("실패실패..", "${it.message.toString()}")
-                _liveToast.postValue(it.localizedMessage)
-            }).addTo(disposable)
-    }
-
-    fun search(key: String, text: String){
-        repo.getCovidInfo(key)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
-            .subscribe({
-                //여기에서 라이브데이터에 받은 데이터를 넣어줘야될것으로 보이는 맞나?
-                //맞으면 어떻게 넣어줘야됨?
-                if (text.equals()){
-
+            .map { response ->
+                when (text) {
+                    response.busan.countryName -> response.busan
+                    response.seoul.countryName -> response.seoul
+                    response.chungbuk.countryName -> response.chungbuk
+                    response.chungnam.countryName -> response.chungnam
+                    response.daegu.countryName -> response.daegu
+                    response.ulsan.countryName -> response.ulsan
+                    response.sejong.countryName -> response.sejong
+                    response.daejeon.countryName -> response.daejeon
+                    response.gwangju.countryName -> response.gwangju
+                    response.gyeongbuk.countryName -> response.gyeongbuk
+                    response.gyeonggi.countryName -> response.gyeonggi
+                    response.gyeongnam.countryName -> response.gyeongnam
+                    response.gangwon.countryName -> response.gangwon
+                    response.incheon.countryName -> response.incheon
+                    response.jeonnam.countryName -> response.jeonnam
+                    response.quarantine.countryName -> response.quarantine
+                    response.jeju.countryName -> response.jeju
+                    response.jeonbuk.countryName -> response.jeonbuk
+                    else -> response.korea
                 }
-
-                val regionList = arrayListOf(
-                    it?.korea,
-                    it?.seoul,
-                    it?.busan,
-                    it?.incheon,
-                    it?.gwangju,
-                    it?.jeonbuk,
-                    it?.chungbuk,
-                    it?.jeonnam,
-                    it?.gyeongbuk,
-                    it?.daegu,
-                    it?.ulsan,
-                    it?.daejeon,
-                    it?.sejong,
-                    it?.chungnam,
-                    it?.gyeonggi,
-                    it?.gyeongnam,
-                    it?.gangwon,
-                    it?.jeju,
-                    it?.quarantine
-                )
-                Log.d("성공성공!", regionList.toString())
-                _liveCovidVo.postValue(regionList)
-
-            }, {
-                Log.d("실패실패..", "${it.localizedMessage.toString()}")
-                Log.d("실패실패..", "${it.message.toString()}")
-                _liveToast.postValue(it.localizedMessage)
-            }).addTo(disposable)
+            }
+            .subscribeBy(
+                onNext = { localCovidVo ->
+                    _liveCovidVo.value = localCovidVo
+                    _liveToast.value = "불러오기 성공"
+                },
+                onError = {
+                    Log.d("실패실패..", "${it.localizedMessage.toString()}")
+                    Log.d("실패실패..", "${it.message.toString()}")
+                    _liveToast.value = it.localizedMessage
+                }
+            ).addTo(disposable)
 //        val filterString = charSequence.toString()
 //        val results = FilterResults()
 //

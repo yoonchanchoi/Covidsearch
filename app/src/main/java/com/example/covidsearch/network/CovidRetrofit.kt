@@ -5,6 +5,7 @@ import com.example.covidsearch.CovidService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 object CovidRetrofit {
@@ -12,12 +13,13 @@ object CovidRetrofit {
     private val retrofit = Retrofit.Builder()
         .baseUrl(CovidApi.DOMAIN)
         .addConverterFactory(GsonConverterFactory.create())
-        .addConverterFactory(GsonConverterFactory.create())
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .client(covidOkHttpClient(covidLoggingInterceptor()))
         .build()
 
     private fun covidOkHttpClient(interceptor: HttpLoggingInterceptor): OkHttpClient{
         val b = OkHttpClient.Builder()
+        b.addInterceptor(interceptor)
         //이 클라이언트를 통해 오고 가는 네트워크 요청/응답을 로그로 표시하도록 함
         return b.build()
     }

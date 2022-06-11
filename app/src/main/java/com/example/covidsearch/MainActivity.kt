@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
 import androidx.lifecycle.Observer
@@ -22,12 +24,8 @@ import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityMainBinding
-    lateinit var covidViewModel: CovidViewModel
-
-    private val covidAdapter: CovidViewAdapter by lazy {
-        CovidViewAdapter()
-    }
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var covidViewModel: CovidViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,54 +33,23 @@ class MainActivity : AppCompatActivity() {
         val viewModelFactory = CovidViewModelFactory(repository)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        covidViewModel = ViewModelProvider(this, viewModelFactory).get(CovidViewModel::class.java)
-        covidViewModel.getAll(TOKEN)
-        initAdapter()
+        covidViewModel = ViewModelProvider(this, viewModelFactory)[CovidViewModel::class.java]
+        binding.btnSearch.setOnClickListener {
+            covidViewModel.search(binding.etSearch.toString())
+        }
         observeCovidList()
-//        search()
+        observeToast()
     }
 
-    private fun initAdapter() {
-        binding.re.adapter = covidAdapter
+    private fun observeToast() {
+        covidViewModel.liveToast.observe(this, Observer {
+            Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
+        })
     }
 
     private fun observeCovidList() {
         covidViewModel.liveCovidVo.observe(this, Observer { covidList ->
-            covidAdapter.setList(covidList)
+            Log.d("testCovidResponse", covidList.toString())
         })
     }
-
-//    val observableTextQuery = Observable
-//        .create(/* observable 추가 */)
-//        .debounce(500, TimeUnit.MILLISECONDS)  //입력 후 0.5간 추가 입력이 없어야만 작동
-//        .subscribeOn(Schedulers.io())  //새로운 스레드에서 작업
-
-    val observableTextQuery = Observable
-        .create(ObservableOnSubscribe { emitter: ObservableEmitter<String>? ->
-            binding.etSearch.addTextChangedListener(object : TextWatcher{
-                override fun afterTextChanged(s: Editable?) {
-                }
-
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
-                    emitter?.onNext(s.toString())
-                }
-
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                }
-
-            })
-        })
-        .debounce(500, TimeUnit.MILLISECONDS)
-        .subscribeOn(Schedulers.io())
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-    }
-
 }
